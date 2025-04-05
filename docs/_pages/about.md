@@ -1,8 +1,10 @@
 ---
-layout: single
 title: "About Me"
+layout: single
 permalink: /about/
+author_profile: true
 ---
+
 
 ### **About Me**  
 Hey! I’m Shreyan—a Computer Science undergrad who’s passionate about building creative tech solutions and solving real-world problems with code.  
