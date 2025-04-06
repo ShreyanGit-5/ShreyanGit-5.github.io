@@ -8,7 +8,7 @@ author_profile: true
 ### 👋 About Me  
 Hey! I’m **Shreyan** — a Computer Science undergrad passionate about building creative tech solutions and solving real-world problems with code.
 
-<a href="assets/files/resume_1.0.pdf" target="_blank" class="btn btn--primary btn--large">
+<a href="/assets/files/resume_1.0.pdf" target="_blank" class="btn btn--primary btn--large">
 📄 Download My Resume (PDF)
 </a>
 
