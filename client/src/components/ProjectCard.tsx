@@ -1,8 +1,18 @@
 import React from 'react';
 import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 
+interface ProjectCardProps {
+  title: string;
+  description: string;
+  image: string;
+  tags?: string[];
+  demoLink?: string;
+  githubLink?: string;
+  featured?: boolean;
+}
+
 // ProjectCard component that displays project information
-const ProjectCard = ({ 
+const ProjectCard: React.FC<ProjectCardProps> = ({ 
   title, 
   description, 
   image, 
@@ -86,4 +96,4 @@ const ProjectCard = ({
   );
 };
 
-export default ProjectCard;
+export default ProjectCard; 

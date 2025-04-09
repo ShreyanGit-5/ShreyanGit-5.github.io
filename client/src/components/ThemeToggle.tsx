@@ -2,7 +2,7 @@ import React from 'react';
 import { Sun, Moon } from 'lucide-react';
 import { useTheme } from '../contexts/ThemeContext';
 
-const ThemeToggle = () => {
+const ThemeToggle: React.FC = () => {
   const { theme, toggleTheme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -31,4 +31,4 @@ const ThemeToggle = () => {
   );
 };
 
-export default ThemeToggle;
+export default ThemeToggle; 

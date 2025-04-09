@@ -8,24 +8,40 @@ if (typeof window !== 'undefined') {
   Modal.setAppElement('#root');
 }
 
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+  liveLink: string;
+  repoLink: string;
+  challenges: string;
+  solutions: string;
+}
+
+interface AnimatedProjectCardProps {
+  project: Project;
+  className?: string;
+  [key: string]: any; // For additional props
+}
+
 /**
  * AnimatedProjectCard - A component for project cards with hover animations
  * 
- * @param {Object} props - Component props
- * @param {Object} props.project - Project data
- * @param {string} props.className - Additional CSS classes
+ * @param {AnimatedProjectCardProps} props - Component props
  * @returns {JSX.Element} - Animated project card component
  */
-const AnimatedProjectCard = ({ project, className = '', ...props }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, className = '', ...props }) => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   // Open modal
-  const openModal = () => {
+  const openModal = (): void => {
     setIsModalOpen(true);
   };
 
   // Close modal
-  const closeModal = () => {
+  const closeModal = (): void => {
     setIsModalOpen(false);
   };
 
@@ -250,4 +266,4 @@ const AnimatedProjectCard = ({ project, className = '', ...props }) => {
   );
 };
 
-export default AnimatedProjectCard;
+export default AnimatedProjectCard; 

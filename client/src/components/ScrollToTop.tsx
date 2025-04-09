@@ -6,12 +6,12 @@ import { ChevronUp } from 'lucide-react';
  * A scroll-to-top button component that appears when the user scrolls down
  * and smoothly scrolls back to the top when clicked
  */
-const ScrollToTop = () => {
-  const [isVisible, setIsVisible] = useState(false);
+const ScrollToTop: React.FC = () => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   // Show the button when the user scrolls down 300px from the top
   useEffect(() => {
-    const toggleVisibility = () => {
+    const toggleVisibility = (): void => {
       if (window.pageYOffset > 300) {
         setIsVisible(true);
       } else {
@@ -26,7 +26,7 @@ const ScrollToTop = () => {
   }, []);
 
   // Scroll to the top smoothly
-  const scrollToTop = () => {
+  const scrollToTop = (): void => {
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -78,4 +78,4 @@ const ScrollToTop = () => {
   );
 };
 
-export default ScrollToTop;
+export default ScrollToTop; 

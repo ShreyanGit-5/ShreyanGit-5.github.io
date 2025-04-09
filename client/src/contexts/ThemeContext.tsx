@@ -1,18 +1,32 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-// Create theme context
-export const ThemeContext = createContext({
+type Theme = 'light' | 'dark';
+
+interface ThemeContextType {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  systemTheme: Theme;
+  toggleTheme: () => void;
+}
+
+interface ThemeProviderProps {
+  children: React.ReactNode;
+}
+
+// Create theme context with default values
+export const ThemeContext = createContext<ThemeContextType>({
   theme: 'light',
   setTheme: () => {},
-  systemTheme: 'light'
+  systemTheme: 'light',
+  toggleTheme: () => {}
 });
 
 // Theme provider component
-export const ThemeProvider = ({ children }) => {
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   // Check if user previously set a theme preference
-  const getInitialTheme = () => {
+  const getInitialTheme = (): Theme => {
     if (typeof window !== 'undefined' && window.localStorage) {
-      const storedTheme = window.localStorage.getItem('theme');
+      const storedTheme = window.localStorage.getItem('theme') as Theme;
       if (storedTheme) {
         return storedTheme;
       }
@@ -27,8 +41,8 @@ export const ThemeProvider = ({ children }) => {
     return 'light';
   };
   
-  const [theme, setTheme] = useState(getInitialTheme);
-  const [systemTheme, setSystemTheme] = useState('light');
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  const [systemTheme, setSystemTheme] = useState<Theme>('light');
   
   // Effect to handle theme changes
   useEffect(() => {
@@ -49,44 +63,33 @@ export const ThemeProvider = ({ children }) => {
     // Set initial system theme
     setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
     
-    // Listen for changes
-    const handleChange = (e) => {
+    // Listen for system theme changes
+    const handleChange = (e: MediaQueryListEvent) => {
       setSystemTheme(e.matches ? 'dark' : 'light');
     };
     
-    // Modern browsers
-    if (mediaQuery.addEventListener) {
-      mediaQuery.addEventListener('change', handleChange);
-      return () => mediaQuery.removeEventListener('change', handleChange);
-    } 
-    // Older browsers
-    else {
-      mediaQuery.addListener(handleChange);
-      return () => mediaQuery.removeListener(handleChange);
-    }
+    mediaQuery.addEventListener('change', handleChange);
+    
+    return () => {
+      mediaQuery.removeEventListener('change', handleChange);
+    };
   }, []);
   
-  // Memoize context value to prevent unnecessary renders
-  const value = React.useMemo(() => ({
-    theme,
-    setTheme,
-    systemTheme
-  }), [theme, systemTheme]);
-  
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
+  };
+
   return (
-    <ThemeContext.Provider value={value}>
+    <ThemeContext.Provider value={{ theme, setTheme, systemTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 };
 
-// Custom hook for accessing theme context
-export function useTheme() {
+export function useTheme(): ThemeContextType {
   const context = useContext(ThemeContext);
-  
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
-  
   return context;
-}
+} 

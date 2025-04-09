@@ -2,8 +2,20 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import AnimatedProjectCard from './AnimatedProjectCard';
 
+interface Project {
+  id: number;
+  title: string;
+  description: string;
+  tags: string[];
+  image: string;
+  liveLink: string;
+  repoLink: string;
+  challenges: string;
+  solutions: string;
+}
+
 // Enhanced project data with additional details for the modal
-const projects = [
+const projects: Project[] = [
   {
     id: 1,
     title: 'E-commerce Platform',
@@ -72,7 +84,7 @@ const projects = [
   }
 ];
 
-const ProjectGrid = () => {
+const ProjectGrid: React.FC = () => {
   // Container variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -102,4 +114,4 @@ const ProjectGrid = () => {
   );
 };
 
-export default ProjectGrid;
+export default ProjectGrid; 
