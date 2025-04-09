@@ -1,14 +1,13 @@
-import { defineConfig } from "drizzle-kit";
+import knex from 'knex';
 
-if (!process.env.DATABASE_URL) {
-  throw new Error("DATABASE_URL, ensure the database is provisioned");
-}
-
-export default defineConfig({
-  out: "./migrations",
-  schema: "./shared/schema.ts",
-  dialect: "postgresql",
-  dbCredentials: {
-    url: process.env.DATABASE_URL,
+const db = knex({
+  client: 'pg',
+  connection: {
+    host: 'localhost',
+    user: 'your_username',
+    password: 'your_password',
+    database: 'your_database',
   },
 });
+
+export default db;
