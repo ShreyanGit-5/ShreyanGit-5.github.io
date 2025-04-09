@@ -1,0 +1,112 @@
+## Project Card Enhancements with Tailwind CSS + React
+
+Build a project card section with hover icons and a modal for details. Use Tailwind CSS and React.
+
+### Part 1: Hover Icons (GitHub + Live Demo)
+
+**Task:**  
+Add GitHub and Live Demo icons that appear on hover.
+
+**Instructions:**
+
+- Install `react-icons`:
+  ```bash
+  npm install react-icons
+  ```
+- Use `FaGithub` and `FaExternalLinkAlt` from `react-icons/fa`.
+- Structure each card:
+  ```jsx
+  <div className="relative group">
+    {/* Card content: image, title, etc. */}
+    <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition duration-300 ease-in-out">
+      <a href={githubUrl} target="_blank" rel="noopener noreferrer" aria-label="View source code">
+        <FaGithub className="text-white text-2xl" />
+      </a>
+      <a href={liveUrl} target="_blank" rel="noopener noreferrer" aria-label="View live demo">
+        <FaExternalLinkAlt className="text-white text-2xl" />
+      </a>
+    </div>
+  </div>
+  ```
+- Ensure:
+  - Icons are hidden (`opacity-0`) until hover (`group-hover:opacity-100`).
+  - Transitions are smooth (`transition`, `duration-300`, `ease-in-out`).
+  - Links open in new tabs with proper `rel` attributes.
+
+---
+
+### Part 2: “Read More” Modal
+
+**Task:**  
+Add a “Read More” button that opens a modal with project details.
+
+**Instructions:**
+
+1. **Install `react-modal`:**
+   ```bash
+   npm install react-modal
+   ```
+
+2. **Update `ProjectCard.jsx`:**
+   - Add state for modal visibility:
+     ```jsx
+     import { useState } from 'react';
+     import Modal from 'react-modal';
+     Modal.setAppElement('#root');
+     ```
+   - Add button and modal:
+     ```jsx
+     function ProjectCard({ project }) {
+       const [isOpen, setIsOpen] = useState(false);
+
+       return (
+         <div>
+           <button
+             className="bg-blue-500 text-white px-4 py-2 rounded"
+             onClick={() => setIsOpen(true)}
+           >
+             Read More
+           </button>
+           <Modal
+             isOpen={isOpen}
+             onRequestClose={() => setIsOpen(false)}
+             className="bg-white p-6 rounded-lg max-w-lg mx-auto mt-20"
+             overlayClassName="fixed inset-0 bg-black bg-opacity-50"
+           >
+             <h2 className="text-2xl font-bold">{project.title}</h2>
+             <p><strong>Tech:</strong> {project.tech}</p>
+             <p><strong>Challenges:</strong> {project.challenges}</p>
+             <p><strong>Solutions:</strong> {project.solutions}</p>
+             <button
+               className="mt-4 text-gray-500"
+               onClick={() => setIsOpen(false)}
+             >
+               Close
+             </button>
+           </Modal>
+         </div>
+       );
+     }
+     ```
+
+3. **Style with Tailwind:**
+   - Button: `bg-blue-500 text-white px-4 py-2 rounded`.
+   - Modal: `bg-white p-6 rounded-lg max-w-lg mx-auto mt-20`.
+   - Overlay: `fixed inset-0 bg-black bg-opacity-50`.
+
+4. **Accessibility:**
+   - Set `Modal.setAppElement('#root')` for screen readers.
+   - Ensure modal closes with `Esc` key.
+
+---
+
+### Requirements
+
+- Cards must be responsive and minimalist.
+- Use project data with fields: `title`, `githubUrl`, `liveUrl`, `tech`, `challenges`, `solutions`.
+- Test hover and modal behavior in Replit’s preview.
+
+**Output:**  
+Deploy a functional project card section with hover icons and modals in a Replit React project.
+
+---
