@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Linkedin, Github, Twitter, Code } from 'lucide-react';
 import AnimatedSection from './AnimatedSection';
+import { FaLinkedin, FaGithub } from 'react-icons/fa';
 
 const AboutSection = ({ 
   name = "Jane Doe", 
@@ -80,98 +81,38 @@ const AboutSection = ({
               
               {/* Social Links for About Page */}
               <motion.div 
-                className="flex justify-center space-x-3 sm:space-x-4"
+                className="flex items-center space-x-4 mt-6"
+                variants={listVariants}
                 initial="hidden"
                 animate="visible"
-                variants={{
-                  hidden: { opacity: 0 },
-                  visible: {
-                    opacity: 1,
-                    transition: {
-                      delayChildren: 0.3,
-                      staggerChildren: 0.1
-                    }
-                  }
-                }}
               >
-                {/* LinkedIn */}
                 <motion.a
-                  href="https://linkedin.com/"
+                  href="https://linkedin.com/in/your-profile"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Visit LinkedIn profile"
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 dark:from-blue-500 dark:to-blue-600 flex items-center justify-center text-white shadow-md"
+                  className="icon-link text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300"
                   whileHover={{ 
-                    scale: 1.15,
-                    boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)"
+                    scale: 1.2,
+                    color: "#4F46E5",
+                    textShadow: "0px 0px 8px rgba(79, 70, 229, 0.3)"
                   }}
-                  whileTap={{ scale: 0.95 }}
-                  variants={{
-                    hidden: { y: 20, opacity: 0 },
-                    visible: { y: 0, opacity: 1 }
-                  }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  <Linkedin size={18} />
+                  <FaLinkedin className="text-2xl" />
                 </motion.a>
-                
-                {/* GitHub */}
                 <motion.a
-                  href="https://github.com/"
+                  href="https://github.com/your-username"
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Visit GitHub profile"
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 dark:from-gray-600 dark:to-gray-700 flex items-center justify-center text-white shadow-md"
+                  className="icon-link text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-300"
                   whileHover={{ 
-                    scale: 1.15,
-                    boxShadow: "0 0 15px rgba(75, 85, 99, 0.5)"
+                    scale: 1.2,
+                    color: "#4F46E5",
+                    textShadow: "0px 0px 8px rgba(79, 70, 229, 0.3)"
                   }}
-                  whileTap={{ scale: 0.95 }}
-                  variants={{
-                    hidden: { y: 20, opacity: 0 },
-                    visible: { y: 0, opacity: 1 }
-                  }}
+                  whileTap={{ scale: 0.9 }}
                 >
-                  <Github size={18} />
-                </motion.a>
-                
-                {/* Twitter (without label) */}
-                <motion.a
-                  href="https://twitter.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Visit Twitter profile"
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-400 to-blue-500 dark:from-blue-500 dark:to-blue-600 flex items-center justify-center text-white shadow-md"
-                  whileHover={{ 
-                    scale: 1.15,
-                    boxShadow: "0 0 15px rgba(59, 130, 246, 0.5)"
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  variants={{
-                    hidden: { y: 20, opacity: 0 },
-                    visible: { y: 0, opacity: 1 }
-                  }}
-                >
-                  <Twitter size={18} />
-                </motion.a>
-                
-                {/* LeetCode (using Code icon) */}
-                <motion.a
-                  href="https://leetcode.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Visit LeetCode profile"
-                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-500 dark:from-yellow-500 dark:to-yellow-600 flex items-center justify-center text-white shadow-md"
-                  whileHover={{ 
-                    scale: 1.15,
-                    boxShadow: "0 0 15px rgba(251, 191, 36, 0.5)"
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  variants={{
-                    hidden: { y: 20, opacity: 0 },
-                    visible: { y: 0, opacity: 1 }
-                  }}
-                >
-                  <Code size={18} />
+                  <FaGithub className="text-2xl" />
                 </motion.a>
               </motion.div>
             </div>

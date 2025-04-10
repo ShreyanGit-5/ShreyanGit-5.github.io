@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import Modal from 'react-modal';
@@ -34,6 +34,22 @@ interface AnimatedProjectCardProps {
  */
 const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, className = '', ...props }) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  const [imageError, setImageError] = useState<boolean>(false);
+
+  // Handle image loading
+  useEffect(() => {
+    const img = new Image();
+    img.src = project.image;
+    img.onload = () => {
+      setImageLoaded(true);
+      setImageError(false);
+    };
+    img.onerror = () => {
+      setImageError(true);
+      setImageLoaded(false);
+    };
+  }, [project.image]);
 
   // Open modal
   const openModal = (): void => {
@@ -59,13 +75,22 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
       {...props}
     >
       {/* Project Image with Hover Icons */}
-      <div className="relative h-48 sm:h-52 md:h-56 lg:h-64 w-full bg-gray-100 dark:bg-gray-800 overflow-hidden group">
-        {project.image ? (
+      <div className="relative aspect-[16/9] w-full bg-gray-100 dark:bg-gray-800 overflow-hidden group">
+        {!imageError ? (
           <img
             src={project.image}
             alt={project.title}
-            className="w-full h-full object-cover transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:brightness-90"
-            loading="lazy" // For better performance
+            className={`w-full h-full object-contain transition-all duration-500 ease-in-out group-hover:scale-105 group-hover:brightness-90 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+            loading="lazy"
+            width={800}
+            height={450}
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            srcSet={`
+              ${project.image}?w=400&h=225&fit=contain&auto=format 400w,
+              ${project.image}?w=600&h=338&fit=contain&auto=format 600w,
+              ${project.image}?w=800&h=450&fit=contain&auto=format 800w
+            `}
+            onError={() => setImageError(true)}
           />
         ) : (
           <div className="flex items-center justify-center h-full bg-gradient-to-br from-blue-400 to-purple-500 text-white text-xl sm:text-2xl font-bold">
@@ -73,24 +98,32 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
           </div>
         )}
         
+        {/* Loading state */}
+        {!imageLoaded && !imageError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700 animate-pulse">
+            <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+          </div>
+        )}
+        
         {/* Artistic Hover Overlay - minimalist style with fluid transitions */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/80 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out backdrop-blur-[2px]">
-          <div className="flex gap-6 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+          <div className="flex gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
             {project.repoLink && (
               <motion.a
                 href={project.repoLink}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View source code"
-                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 shadow-lg"
+                className="project-icon icon-link w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 shadow-lg"
                 whileHover={{ 
                   scale: 1.1,
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)" 
+                  boxShadow: "0 0 8px rgba(138, 43, 226, 0.6), 0 0 12px rgba(0, 123, 255, 0.5)"
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaGithub className="text-white text-xl" />
+                <div className="flex items-center justify-center w-full h-full">
+                  <FaGithub className="text-white text-xl" />
+                </div>
               </motion.a>
             )}
             
@@ -100,15 +133,16 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="View live demo"
-                className="w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 shadow-lg"
+                className="project-icon icon-link w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 shadow-lg"
                 whileHover={{ 
                   scale: 1.1,
-                  backgroundColor: "rgba(255, 255, 255, 0.2)",
-                  boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)" 
+                  boxShadow: "0 0 8px rgba(138, 43, 226, 0.6), 0 0 12px rgba(0, 123, 255, 0.5)"
                 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <FaExternalLinkAlt className="text-white text-lg" />
+                <div className="flex items-center justify-center w-full h-full">
+                  <FaExternalLinkAlt className="text-white text-xl" />
+                </div>
               </motion.a>
             )}
           </div>
@@ -180,6 +214,15 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
                 src={project.image} 
                 alt={project.title} 
                 className="w-full h-52 sm:h-64 md:h-72 object-cover"
+                loading="lazy"
+                width={800}
+                height={480}
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
+                srcSet={`
+                  ${project.image}?w=400&h=240&fit=crop&auto=format 400w,
+                  ${project.image}?w=600&h=360&fit=crop&auto=format 600w,
+                  ${project.image}?w=800&h=480&fit=crop&auto=format 800w
+                `}
               />
             </div>
           )}

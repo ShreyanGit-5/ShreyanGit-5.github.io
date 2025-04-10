@@ -352,7 +352,7 @@ const ContactSection = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={`Connect with me on ${link.name}`}
-                    className="group relative flex flex-col items-center justify-center"
+                    className="icon-link group relative flex flex-col items-center justify-center"
                     variants={{
                       hidden: { opacity: 0, y: 20 },
                       visible: { opacity: 1, y: 0 }

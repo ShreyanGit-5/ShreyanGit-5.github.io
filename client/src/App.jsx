@@ -27,38 +27,6 @@ function Home() {
       <React.Suspense fallback={<div className="h-80 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">Loading hero...</div>}>
         <HeroComponent />
       </React.Suspense>
-      
-      <AnimatedSection className="container mx-auto px-4 md:px-6 py-16">
-        <motion.h2 
-          className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-600 via-purple-500 to-indigo-600 dark:from-blue-400 dark:via-purple-400 dark:to-indigo-400 bg-clip-text text-transparent animate-gradient"
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          Welcome to My Portfolio
-        </motion.h2>
-        <motion.p 
-          className="text-lg text-gray-700 dark:text-gray-300 mb-8 max-w-2xl"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
-        >
-          This is where I showcase my work and share my journey as a developer. Feel free to explore my projects and get in touch!
-        </motion.p>
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.5 }}
-        >
-          <motion.button 
-            className="px-6 py-3 rounded-lg font-medium text-white shadow-md bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-purple-600 hover:to-indigo-600 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Explore My Work
-          </motion.button>
-        </motion.div>
-      </AnimatedSection>
     </motion.div>
   );
 }

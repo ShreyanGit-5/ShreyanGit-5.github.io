@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useLocation } from 'wouter';
 import AnimatedButton from './AnimatedButton';
 
 const Hero = () => {
+  const [, setLocation] = useLocation();
+  
   // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -28,9 +31,16 @@ const Hero = () => {
     }
   };
 
+  const handleNavigation = (path) => {
+    // Add a small delay to allow the button animation to complete
+    setTimeout(() => {
+      setLocation(path);
+    }, 300);
+  };
+
   return (
     <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 min-h-[80vh] flex items-center">
-      <div className="container mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-16 md:py-24">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 py-10 sm:py-16 md:py-24 w-full max-w-7xl">
         <motion.div
           className="max-w-4xl mx-auto text-center"
           variants={containerVariants}
@@ -61,49 +71,18 @@ const Hero = () => {
             variants={itemVariants}
           >
             <AnimatedButton 
-              onClick={() => window.location.href = '/projects'}
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
+              onClick={() => handleNavigation('/projects')}
+              className="w-full sm:w-auto min-w-[200px]"
             >
               View My Work
             </AnimatedButton>
             <AnimatedButton 
-              onClick={() => window.location.href = '/contact'}
-              className="w-full sm:w-auto bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-800"
+              onClick={() => handleNavigation('/contact')}
+              className="w-full sm:w-auto min-w-[200px]"
+              isContactButton={true}
             >
               Get In Touch
             </AnimatedButton>
-          </motion.div>
-          
-          <motion.div
-            className="hidden sm:flex justify-center mt-12 md:mt-16"
-            variants={itemVariants}
-          >
-            <motion.div
-              animate={{ 
-                y: [0, -10, 0],
-                transition: {
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  ease: "easeInOut"
-                }
-              }}
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                width="36" 
-                height="36" 
-                viewBox="0 0 24 24" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                className="text-gray-500 dark:text-gray-400"
-              >
-                <path d="M12 5v14M5 12l7 7 7-7"/>
-              </svg>
-            </motion.div>
           </motion.div>
         </motion.div>
       </div>

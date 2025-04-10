@@ -61,19 +61,47 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
     >
       <nav className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
-          {/* Logo */}
+          {/* Logo with enhanced hover effect */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <svg className="h-8 w-8 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="currentColor" />
-                <path d="M2 17L12 22L22 17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                <path d="M2 12L12 17L22 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              <span className="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-200">DevPortfolio</span>
+            <Link href="/" className="flex items-center group">
+              <div className="relative">
+                <svg 
+                  className="h-8 w-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-3" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path 
+                    d="M12 2L2 7L12 12L22 7L12 2Z" 
+                    fill="currentColor" 
+                    className="transition-colors duration-300"
+                  />
+                  <path 
+                    d="M2 17L12 22L22 17" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="transition-colors duration-300"
+                  />
+                  <path 
+                    d="M2 12L12 17L22 12" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="transition-colors duration-300"
+                  />
+                </svg>
+                <div className="absolute inset-0 bg-primary-500 opacity-0 group-hover:opacity-20 rounded-full transition-opacity duration-300" />
+              </div>
+              <span className="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-200 transition-colors duration-300 group-hover:text-primary-500">
+                DevPortfolio
+              </span>
             </Link>
           </div>
           
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation with enhanced hover effects */}
           <div className="hidden md:flex items-center space-x-8">
             <NavLink href="/" active={isActive('/')}>Home</NavLink>
             <NavLink href="/about" active={isActive('/about')}>About</NavLink>
@@ -81,31 +109,56 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
             <NavLink href="/contact" active={isActive('/contact')}>Contact</NavLink>
           </div>
           
-          {/* Mobile Menu Button */}
+          {/* Mobile Menu Button with enhanced hover effect */}
           <div className="md:hidden flex items-center">
             <button 
               aria-label={isMobileMenuOpen ? 'Close main menu' : 'Open main menu'}
-              className="text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-md p-1"
+              className="relative p-2 rounded-full text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary focus:outline-none transition-all duration-300"
               onClick={toggleMobileMenu}
             >
+              <div className="absolute inset-0 bg-primary-500 opacity-0 hover:opacity-10 rounded-full transition-opacity duration-300" />
               <span className="sr-only">{isMobileMenuOpen ? 'Close main menu' : 'Open main menu'}</span>
-              {/* Icon when menu is closed */}
               {!isMobileMenuOpen && (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                <svg 
+                  className="block h-6 w-6 transition-transform duration-300" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor" 
+                  aria-hidden="true"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M4 6h16M4 12h16M4 18h16" 
+                    className="transition-colors duration-300"
+                  />
                 </svg>
               )}
-              {/* Icon when menu is open */}
               {isMobileMenuOpen && (
-                <svg className="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                <svg 
+                  className="block h-6 w-6 transition-transform duration-300" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor" 
+                  aria-hidden="true"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M6 18L18 6M6 6l12 12" 
+                    className="transition-colors duration-300"
+                  />
                 </svg>
               )}
             </button>
           </div>
         </div>
         
-        {/* Mobile Menu Container */}
+        {/* Mobile Menu Container with enhanced transitions */}
         <div 
           className={cn(
             "md:hidden overflow-hidden transition-all duration-300 ease-in-out backdrop-blur-md",
@@ -126,7 +179,7 @@ const Navbar: React.FC<NavbarProps> = ({ className }) => {
   );
 };
 
-// Desktop navigation link
+// Enhanced Desktop Navigation Link
 interface NavLinkProps {
   href: string;
   active: boolean;
@@ -147,22 +200,26 @@ const NavLink: React.FC<NavLinkProps> = ({ href, active, children }) => {
           "absolute bottom-[-2px] left-0 h-[2px] bg-primary transition-all duration-300 rounded-full",
           active ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
         )} />
+        <div className="absolute inset-0 bg-primary-500 opacity-0 group-hover:opacity-5 rounded-md transition-opacity duration-300" />
       </a>
     </Link>
   );
 };
 
-// Mobile navigation link
+// Enhanced Mobile Navigation Link
 const MobileNavLink: React.FC<NavLinkProps> = ({ href, active, children }) => {
   return (
     <Link href={href}>
       <a className={cn(
-        "block px-4 py-2.5 rounded-md text-base font-medium transition-all duration-200",
+        "block px-4 py-2.5 rounded-md text-base font-medium transition-all duration-300 relative overflow-hidden",
         active 
           ? "text-white bg-primary shadow-md" 
           : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-primary dark:hover:text-primary"
       )}>
         {children}
+        {!active && (
+          <div className="absolute inset-0 bg-primary-500 opacity-0 hover:opacity-10 transition-opacity duration-300" />
+        )}
       </a>
     </Link>
   );
