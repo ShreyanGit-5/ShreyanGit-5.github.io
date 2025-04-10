@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTheme } from '../contexts/ThemeContext';
 
 /**
  * Minimal footer component with copyright information
@@ -8,8 +9,9 @@ import { motion } from 'framer-motion';
  */
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { theme } = useTheme();
   
-  // Container and item animation variants
+  // Container animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -22,17 +24,15 @@ const Footer = () => {
   
   return (
     <motion.footer 
-      className="bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 py-6"
+      className={`${theme === 'dark' ? 'bg-gray-900 text-gray-400' : 'bg-[#F9FAFB] text-gray-700'} py-6 text-center transition-colors duration-200`}
       variants={containerVariants}
       initial="hidden"
       animate="visible"
     >
       <div className="container mx-auto px-4 sm:px-6">
-        <div className="flex justify-center">
-          <p className="text-sm text-gray-500 dark:text-gray-400 font-medium tracking-wide">
-            © {currentYear} Your Name. All rights reserved.
-          </p>
-        </div>
+        <p className="text-sm font-medium tracking-wide">
+          © {currentYear} Your Name. All rights reserved.
+        </p>
       </div>
     </motion.footer>
   );

@@ -1,227 +1,266 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'wouter';
-import { cn } from '@/lib/utils';
+import { motion, AnimatePresence, useSpring, useTransform, useMotionValue, animate } from 'framer-motion';
+import { Menu, X } from 'lucide-react';
+import { cn } from '../lib/utils';
+import ThemeToggle from './ThemeToggle';
+import { useTheme } from '../contexts/ThemeContext';
 
-interface NavbarProps {
-  className?: string;
-}
+const MENU_ITEMS = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/contact', label: 'Contact' }
+];
 
-const Navbar: React.FC<NavbarProps> = ({ className }) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [location] = useLocation();
-
-  // Handle window resize to close mobile menu on larger screens
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth >= 768 && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [isMobileMenuOpen]);
-
-  // Toggle mobile menu
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  // Check if a link is active
-  const isActive = (path: string) => {
-    if (path === '/' && location === '/') return true;
-    if (path !== '/' && location.startsWith(path)) return true;
-    return false;
-  };
-
-  // State to track scrolling
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  // Handle scroll event to add shadow and background opacity
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Check initial scroll position
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  
-  return (
-    <header 
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full backdrop-blur-sm",
-        isScrolled 
-          ? "bg-white/95 dark:bg-gray-900/95 shadow-md py-3" 
-          : "bg-white/80 dark:bg-gray-900/80 py-4",
-        className
-      )}
-    >
-      <nav className="container mx-auto px-4 md:px-6">
-        <div className="flex justify-between items-center">
-          {/* Logo with enhanced hover effect */}
-          <div className="flex items-center">
-            <Link href="/" className="flex items-center group">
-              <div className="relative">
-                <svg 
-                  className="h-8 w-8 text-primary transition-all duration-300 group-hover:scale-110 group-hover:rotate-3" 
-                  viewBox="0 0 24 24" 
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path 
-                    d="M12 2L2 7L12 12L22 7L12 2Z" 
-                    fill="currentColor" 
-                    className="transition-colors duration-300"
-                  />
-                  <path 
-                    d="M2 17L12 22L22 17" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                    className="transition-colors duration-300"
-                  />
-                  <path 
-                    d="M2 12L12 17L22 12" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                    className="transition-colors duration-300"
-                  />
-                </svg>
-                <div className="absolute inset-0 bg-primary-500 opacity-0 group-hover:opacity-20 rounded-full transition-opacity duration-300" />
-              </div>
-              <span className="ml-2 text-xl font-semibold text-gray-800 dark:text-gray-200 transition-colors duration-300 group-hover:text-primary-500">
-                DevPortfolio
-              </span>
-            </Link>
-          </div>
-          
-          {/* Desktop Navigation with enhanced hover effects */}
-          <div className="hidden md:flex items-center space-x-8">
-            <NavLink href="/" active={isActive('/')}>Home</NavLink>
-            <NavLink href="/about" active={isActive('/about')}>About</NavLink>
-            <NavLink href="/projects" active={isActive('/projects')}>Projects</NavLink>
-            <NavLink href="/contact" active={isActive('/contact')}>Contact</NavLink>
-          </div>
-          
-          {/* Mobile Menu Button with enhanced hover effect */}
-          <div className="md:hidden flex items-center">
-            <button 
-              aria-label={isMobileMenuOpen ? 'Close main menu' : 'Open main menu'}
-              className="relative p-2 rounded-full text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary focus:outline-none transition-all duration-300"
-              onClick={toggleMobileMenu}
-            >
-              <div className="absolute inset-0 bg-primary-500 opacity-0 hover:opacity-10 rounded-full transition-opacity duration-300" />
-              <span className="sr-only">{isMobileMenuOpen ? 'Close main menu' : 'Open main menu'}</span>
-              {!isMobileMenuOpen && (
-                <svg 
-                  className="block h-6 w-6 transition-transform duration-300" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor" 
-                  aria-hidden="true"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth="2" 
-                    d="M4 6h16M4 12h16M4 18h16" 
-                    className="transition-colors duration-300"
-                  />
-                </svg>
-              )}
-              {isMobileMenuOpen && (
-                <svg 
-                  className="block h-6 w-6 transition-transform duration-300" 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor" 
-                  aria-hidden="true"
-                >
-                  <path 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round" 
-                    strokeWidth="2" 
-                    d="M6 18L18 6M6 6l12 12" 
-                    className="transition-colors duration-300"
-                  />
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
-        
-        {/* Mobile Menu Container with enhanced transitions */}
-        <div 
-          className={cn(
-            "md:hidden overflow-hidden transition-all duration-300 ease-in-out backdrop-blur-md",
-            isMobileMenuOpen 
-              ? "max-h-[300px] opacity-100 mt-3 bg-white/95 dark:bg-gray-800/95 rounded-md shadow-lg" 
-              : "max-h-0 opacity-0"
-          )}
-        >
-          <div className="px-3 pt-2 pb-3 space-y-1">
-            <MobileNavLink href="/" active={isActive('/')}>Home</MobileNavLink>
-            <MobileNavLink href="/about" active={isActive('/about')}>About</MobileNavLink>
-            <MobileNavLink href="/projects" active={isActive('/projects')}>Projects</MobileNavLink>
-            <MobileNavLink href="/contact" active={isActive('/contact')}>Contact</MobileNavLink>
-          </div>
-        </div>
-      </nav>
-    </header>
-  );
-};
-
-// Enhanced Desktop Navigation Link
 interface NavLinkProps {
   href: string;
-  active: boolean;
+  children: React.ReactNode;
+  isActive: boolean;
+  onClick?: () => void;
+}
+
+interface CursorAuraProps {
   children: React.ReactNode;
 }
 
-const NavLink: React.FC<NavLinkProps> = ({ href, active, children }) => {
+const CursorAura: React.FC<CursorAuraProps> = ({ children }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const smoothX = useSpring(mouseX, { damping: 20, stiffness: 300 });
+  const smoothY = useSpring(mouseY, { damping: 20, stiffness: 300 });
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
+  };
+
   return (
-    <Link href={href}>
-      <a className={cn(
-        "group font-medium transition-all duration-300 relative px-2 py-1 rounded-md",
-        active 
-          ? "text-primary" 
-          : "text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary"
-      )}>
-        {children}
-        <span className={cn(
-          "absolute bottom-[-2px] left-0 h-[2px] bg-primary transition-all duration-300 rounded-full",
-          active ? "w-full opacity-100" : "w-0 opacity-0 group-hover:w-full group-hover:opacity-100"
-        )} />
-        <div className="absolute inset-0 bg-primary-500 opacity-0 group-hover:opacity-5 rounded-md transition-opacity duration-300" />
-      </a>
-    </Link>
+    <motion.div 
+      className="relative"
+      onMouseMove={handleMouseMove}
+    >
+      <motion.div
+        className="pointer-events-none absolute -inset-[100px] opacity-0 group-hover:opacity-100"
+        style={{
+          background: 'radial-gradient(120px circle at var(--mouse-x) var(--mouse-y), rgb(var(--accent-light) / 0.15), transparent 80%)',
+          WebkitMaskImage: 'radial-gradient(100% 100% at center center, black, transparent)',
+          '--mouse-x': smoothX,
+          '--mouse-y': smoothY,
+        } as any}
+      />
+      {children}
+    </motion.div>
   );
 };
 
-// Enhanced Mobile Navigation Link
-const MobileNavLink: React.FC<NavLinkProps> = ({ href, active, children }) => {
+const MagneticLink: React.FC<NavLinkProps> = ({ href, children, isActive, onClick }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  
+  const x = useSpring(0, { stiffness: 250, damping: 20 });
+  const y = useSpring(0, { stiffness: 250, damping: 20 });
+
+  const magneticScale = useTransform(x, [-20, 0, 20], [1.1, 1, 1.1]);
+  const magneticRotateY = useTransform(x, [-20, 0, 20], [-5, 0, 5]);
+  const glowOpacity = useTransform(x, [-20, 0, 20], [0.6, 0.4, 0.6]);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const bounds = ref.current?.getBoundingClientRect() ?? { left: 0, top: 0, width: 0, height: 0 };
+      const xPosition = (e.clientX - bounds.left - bounds.width / 2) * 0.5;
+      const yPosition = (e.clientY - bounds.top - bounds.height / 2) * 0.5;
+      
+      x.set(xPosition);
+      y.set(yPosition);
+    };
+
+    const handleMouseLeave = () => {
+      animate(x, 0, { type: "spring", stiffness: 250, damping: 20 });
+      animate(y, 0, { type: "spring", stiffness: 250, damping: 20 });
+    };
+
+    ref.current.addEventListener('mousemove', handleMouseMove);
+    ref.current.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      ref.current?.removeEventListener('mousemove', handleMouseMove);
+      ref.current?.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [x, y]);
+
   return (
-    <Link href={href}>
-      <a className={cn(
-        "block px-4 py-2.5 rounded-md text-base font-medium transition-all duration-300 relative overflow-hidden",
-        active 
-          ? "text-white bg-primary shadow-md" 
-          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 hover:text-primary dark:hover:text-primary"
-      )}>
-        {children}
-        {!active && (
-          <div className="absolute inset-0 bg-primary-500 opacity-0 hover:opacity-10 transition-opacity duration-300" />
+    <motion.div 
+      ref={ref}
+      className="relative group"
+      style={{ x, y, scale: magneticScale, rotateY: magneticRotateY }}
+    >
+      <Link href={href}>
+        <a
+          onClick={onClick}
+          data-sidebar="menu-button"
+          className={cn(
+            "relative px-6 py-3 text-lg transition-all duration-300",
+            "hover:text-accent dark:hover:text-accent-400",
+            "before:absolute before:inset-0 before:rounded-xl before:bg-accent/5",
+            "before:opacity-0 before:transition-opacity hover:before:opacity-100",
+            isActive && "text-accent dark:text-accent-400 active-nav-link"
+          )}
+          role="menuitem"
+          aria-current={isActive ? "page" : undefined}
+        >
+          {children}
+          {/* Glow effect background */}
+          <motion.div
+            className="absolute inset-0 rounded-xl bg-gradient-to-r from-accent-400/10 via-accent/10 to-accent-600/10"
+            style={{ opacity: glowOpacity }}
+          />
+          {/* Active state glow effect */}
+          {isActive && (
+            <motion.div
+              className="absolute -inset-1 rounded-xl opacity-20 blur-md"
+              style={{
+                background: 'linear-gradient(90deg, var(--accent-light), var(--accent), var(--accent-dark))',
+                opacity: glowOpacity,
+                boxShadow: '0 0 20px var(--accent)',
+              }}
+            />
+          )}
+          {/* Original gradient underline */}
+          <motion.div 
+            className="absolute bottom-0 left-0 h-[2px] w-0 bg-gradient-to-r from-accent-400 via-accent to-accent-600 transition-all duration-300 group-hover:w-full"
+            initial={{ width: isActive ? "100%" : "0%" }}
+            animate={{ width: isActive ? "100%" : "0%" }}
+            transition={{ duration: 0.3 }}
+          />
+        </a>
+      </Link>
+    </motion.div>
+  );
+};
+
+const Navbar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [location] = useLocation();
+  const { theme } = useTheme();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) setIsOpen(false);
+  }, [location]);
+
+  return (
+    <motion.nav
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        scrolled
+          ? "bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl shadow-lg dark:shadow-accent/5"
+          : "bg-transparent"
+      )}
+      initial={{ y: -100 }}
+      animate={{ y: 0 }}
+      transition={{ type: "spring", stiffness: 250, damping: 20 }}
+      role="navigation"
+      aria-label="Main navigation"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <motion.div
+            className="flex-shrink-0"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Link href="/">
+              <a data-sidebar="menu-button" className="text-[1.75rem] font-bold bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 dark:from-blue-400 dark:via-indigo-400 dark:to-purple-400 text-transparent bg-clip-text hover:scale-105 transition-transform">
+                Portfolio
+              </a>
+            </Link>
+          </motion.div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex md:items-center md:space-x-8">
+            {MENU_ITEMS.map(({ href, label }) => (
+              <CursorAura key={href}>
+                <MagneticLink
+                  href={href}
+                  isActive={location === href}
+                >
+                  {label}
+                </MagneticLink>
+              </CursorAura>
+            ))}
+            <ThemeToggle />
+          </div>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-4 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-expanded={isOpen}
+            aria-controls="mobile-menu"
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isOpen ? "close" : "menu"}
+                initial={{ rotate: 0, opacity: 0 }}
+                animate={{ rotate: isOpen ? 90 : 0, opacity: 1 }}
+                exit={{ rotate: -90, opacity: 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </motion.div>
+            </AnimatePresence>
+          </motion.button>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            id="mobile-menu"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ type: "spring", stiffness: 250, damping: 20 }}
+            className="md:hidden overflow-hidden"
+          >
+            <div className={cn(
+              "px-4 py-6 space-y-4",
+              "bg-white/90 dark:bg-gray-900/90 backdrop-blur-xl",
+              "border-t dark:border-gray-800"
+            )}>
+              {MENU_ITEMS.map(({ href, label }) => (
+                <CursorAura key={href}>
+                  <MagneticLink
+                    href={href}
+                    isActive={location === href}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {label}
+                  </MagneticLink>
+                </CursorAura>
+              ))}
+              <div className="pt-4">
+                <ThemeToggle />
+              </div>
+            </div>
+          </motion.div>
         )}
-      </a>
-    </Link>
+      </AnimatePresence>
+    </motion.nav>
   );
 };
 

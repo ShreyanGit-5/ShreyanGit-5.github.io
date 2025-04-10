@@ -1,9 +1,10 @@
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import NotFound from "@/pages/not-found";
-import Navbar from "@/components/Navbar";
+import { Toaster } from "./components/ui/toaster";
+import NotFound from "./pages/not-found";
+import Navbar from "./components/Navbar";
+import { cn } from "./lib/utils"; // Temporary test to verify if the utils.ts file is resolved correctly.
 
 // Simple placeholder pages for demonstration
 function Home() {

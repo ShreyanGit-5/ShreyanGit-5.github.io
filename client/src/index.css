@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,7 +7,7 @@
 @layer base {
   /* Font definitions for the entire system */
   html {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: 'Open Sans', system-ui, sans-serif;
     scroll-behavior: smooth;
   }
   
@@ -76,11 +76,11 @@
 
   /* Typography styles based on our design system */
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-bold text-gray-900 dark:text-gray-50;
+    @apply font-[Poppins] font-bold text-gray-900 dark:text-gray-50;
   }
   
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl tracking-tight;
+    @apply text-[48px] leading-[60px] tracking-[0.5px] md:text-5xl lg:text-6xl;
   }
   
   h2 {
@@ -104,12 +104,19 @@
   }
   
   p {
-    @apply text-gray-700 dark:text-gray-300 leading-relaxed;
+    @apply font-[Open_Sans] text-[18px] leading-[28px] text-gray-700 dark:text-gray-300;
   }
   
   /* Consistent link styling */
-  a:not(.btn):not([role="button"]) {
-    @apply text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors;
+  a:not(.btn):not([role="button"]):not(.icon-link):not([data-sidebar="menu-button"]) {
+    @apply text-primary-600 dark:text-primary-400 relative inline-block;
+    &::after {
+      content: '';
+      @apply absolute bottom-0 left-0 w-full h-[1px] bg-primary-500 transform scale-x-0 origin-left transition-transform duration-300;
+    }
+    &:hover::after {
+      @apply scale-x-100;
+    }
   }
   
   /* Code blocks */
@@ -243,6 +250,19 @@
     --color-gray-800: 30 41 59;
     --color-gray-900: 15 23 42;
     --color-gray-950: 2 6 23;
+
+    /* Updated dark mode background and text colors */
+    --dark-bg: #121212;
+    --dark-text: #e0e0e0;
+
+    /* Accent color system for gradients and aura effects */
+    --accent-light: 129, 140, 248;   /* Indigo-400 */
+    --accent: 99, 102, 241;          /* Indigo-500 */
+    --accent-dark: 79, 70, 229;      /* Indigo-600 */
+    
+    /* Custom cursor interactions */
+    --mouse-x: 50%;
+    --mouse-y: 50%;
   }
 
   /* Remove underlines from all links by default */
@@ -251,7 +271,7 @@
   }
 
   /* Enhanced Link Styles - only for text links */
-  a:not(.btn):not([role="button"]):not(.icon-link) {
+  a:not(.btn):not([role="button"]):not(.icon-link):not([data-sidebar="menu-button"]) {
     @apply text-primary-600 dark:text-primary-400 relative inline-block;
     &::after {
       content: '';
@@ -290,6 +310,17 @@
   a.project-icon:focus {
     box-shadow: 0 0 10px rgba(138, 43, 226, 0.4), 0 0 12px rgba(0, 123, 255, 0.3);
     transition: box-shadow 0.3s ease;
+  }
+
+  /* Apply updated colors */
+  html.dark {
+    background-color: var(--dark-bg);
+    color: var(--dark-text);
+
+    /* Dark mode accent colors */
+    --accent-light: 165, 180, 252;   /* Indigo-300 */
+    --accent: 129, 140, 248;         /* Indigo-400 */
+    --accent-dark: 99, 102, 241;     /* Indigo-500 */
   }
 }
 
@@ -411,14 +442,46 @@
   .scrollbar-hide::-webkit-scrollbar {
     @apply hidden;
   }
+
+  /* Update specific components */
+  .dark .btn-primary {
+    background-color: #1a73e8;
+    color: #e0e0e0;
+  }
+
+  .dark .btn-secondary {
+    background-color: #5f6368;
+    color: #e0e0e0;
+  }
+
+  /* Enhanced navigation styles */
+  .active-nav-link {
+    @apply relative;
+    text-shadow: 0 0 10px var(--accent-light);
+  }
+
+  .active-nav-link::after {
+    content: '';
+    @apply absolute left-1/2 -translate-x-1/2 bottom-2 w-1 h-1 rounded-full bg-accent;
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  /* Center align nav items */
+  nav .nav-items {
+    @apply flex items-center justify-center h-full space-x-8;
+  }
+
+  nav .nav-link {
+    @apply flex items-center justify-center relative px-6 py-3;
+  }
 }
 
 /* Utility classes */
 @layer utilities {
   .animate-fade-in {
-    @apply opacity-0 animate-[fadeIn_0.5s_ease-in_forwards];
+    animation: fadeIn 0.8s ease-out forwards;
   }
-  
+
   .animate-pulse-fade {
     @apply animate-[pulseFade_2s_ease-in-out_infinite];
   }
@@ -428,11 +491,13 @@
   }
   
   @keyframes fadeIn {
-    from {
-      opacity: 0;
+    0% { 
+      opacity: 0; 
+      transform: translateY(20px); 
     }
-    to {
-      opacity: 1;
+    100% { 
+      opacity: 1; 
+      transform: translateY(0); 
     }
   }
   

@@ -6,7 +6,7 @@ export default {
   theme: {
     // Define font family
     fontFamily: {
-      sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      sans: ['Open Sans', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       heading: ['Poppins', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       mono: ['Fira Code', 'ui-monospace', 'monospace'],
     },
@@ -219,6 +219,9 @@ export default {
           500: "#3b82f6",
           700: "#1d4ed8",
         },
+        darkBackground: '#121212',
+        darkText: '#e0e0e0',
+        darkAccent: '#1a73e8',
       },
       // Animation keyframes
       keyframes: {

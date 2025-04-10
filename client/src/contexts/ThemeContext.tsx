@@ -75,6 +75,13 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     };
   }, []);
   
+  // Effect to apply refined dark mode colors
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.style.setProperty('--dark-bg', '#121212');
+    root.style.setProperty('--dark-text', '#e0e0e0');
+  }, []);
+  
   const toggleTheme = () => {
     setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
   };
@@ -92,4 +99,4 @@ export function useTheme(): ThemeContextType {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
   return context;
-} 
+}
