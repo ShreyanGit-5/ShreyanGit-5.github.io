@@ -1,12 +1,29 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Code, ExternalLink, Github } from 'lucide-react';
+import { Code, ExternalLink, Github } from 'lucide-react'; // Keep icons
+
+// --- Animation Variants ---
+const cardVariants = {
+  hidden: { opacity: 0, y: 30 }, // Start slightly lower and faded out
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 20,
+      duration: 0.6, // Adjust timing
+    },
+  },
+};
+
+// --- Component Code ---
 
 interface ProjectCardProps {
   title: string;
   description: string;
   image: string;
-  codePreview?: string;
+  // codePreview?: string; // Keep if used
   technologies: string[];
   liveUrl?: string;
   githubUrl?: string;
@@ -16,85 +33,84 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   title,
   description,
   image,
-  codePreview,
+  // codePreview, // Keep if used
   technologies,
   liveUrl,
   githubUrl,
 }) => {
-  const [isHovered, setIsHovered] = useState(false);
+  // Removed isHovered state
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <motion.div
-      className="group relative rounded-2xl bg-[#0F0F14] border border-cream/10 overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
+      className="group relative rounded-xl bg-card border border-border/50 overflow-hidden shadow-md" // Use theme card styles
+      variants={cardVariants} // Apply entrance animation variant
+      initial="hidden"
+      whileInView="visible" // Trigger animation on scroll
+      viewport={{ once: true, amount: 0.2 }} // Trigger when 20% is visible
+      whileHover={{
+        scale: 1.03, // Subtle scale on hover
+        // Add glow effect using boxShadow with the accent color
+        boxShadow: `0 10px 25px -5px rgba(var(--color-electric-blue), 0.15), 0 8px 10px -6px rgba(var(--color-electric-blue), 0.1)`,
+        transition: { duration: 0.3 }
+      }}
+      // Removed onHoverStart/End handlers
     >
-      {/* Laptop Mockup */}
-      <div className="relative aspect-[16/10] rounded-t-lg overflow-hidden">
-        <div className="absolute inset-0 bg-[#1A1A1F] rounded-t-lg">
-          {/* Laptop Frame */}
-          <div className="absolute top-0 left-0 right-0 h-6 bg-[#0F0F14] rounded-t-lg flex items-center px-3 gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-cream/20" />
-            <div className="w-2 h-2 rounded-full bg-cream/20" />
-            <div className="w-2 h-2 rounded-full bg-cream/20" />
-          </div>
-          
-          {/* Project Screenshot/Preview */}
-          <motion.div 
-            className="absolute inset-0 mt-6"
-            animate={{
-              scale: isHovered ? 1.05 : 1
-            }}
-            transition={{ duration: 0.4 }}
-          >
-            <img
-              src={image}
-              alt={title}
-              className={`w-full h-full object-cover rounded-t-lg transition-opacity duration-300 ${
-                imageLoaded ? 'opacity-100' : 'opacity-0'
-              }`}
-              onLoad={() => setImageLoaded(true)}
-            />
-            {!imageLoaded && (
-              <div className="absolute inset-0 bg-cream/5 animate-pulse rounded-t-lg" />
-            )}
-          </motion.div>
-        </div>
+      {/* Image Container */}
+      <div className="relative aspect-video overflow-hidden bg-muted"> {/* Use aspect-video, muted bg for loading */}
+        <img
+          src={image}
+          alt={`Screenshot of the ${title} project`} // Descriptive alt text
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ${ 
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setImageLoaded(true)}
+          loading="lazy" // Add lazy loading
+        />
+         {!imageLoaded && (
+           <div className="absolute inset-0 bg-muted animate-pulse" /> // Skeleton loader
+         )}
+         {/* Optional: subtle gradient overlay on image */}
+         {/* <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent"></div> */}
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-cream mb-2">{title}</h3>
-        <p className="text-cream/70 mb-4">{description}</p>
+      <div className="p-5"> {/* Slightly less padding */}
+        <h3 className="text-lg font-semibold text-foreground mb-2">{title}</h3>
+        <p className="text-sm text-secondary-text mb-4 line-clamp-3"> {/* Smaller text, clamp lines */}
+          {description}
+        </p>
 
         {/* Technologies */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {technologies.map((tech, index) => (
+        <div className="flex flex-wrap gap-1.5 mb-4"> {/* Smaller gap */}
+          {technologies.slice(0, 4).map((tech) => ( // Limit displayed techs
             <span
-              key={index}
-              className="px-2 py-1 text-xs rounded-full bg-[#2DB7FF]/10 text-[#2DB7FF] border border-[#2DB7FF]/20"
+              key={tech}
+              // Use theme accent color for tags
+              className="px-2 py-0.5 text-xs rounded-full bg-primary/10 text-primary border border-primary/30 font-medium"
             >
               {tech}
             </span>
           ))}
+          {technologies.length > 4 && (
+             <span className="px-2 py-0.5 text-xs rounded-full bg-muted/50 text-secondary-text">
+               +{technologies.length - 4} more
+             </span>
+          )}
         </div>
 
         {/* Actions */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 text-sm">
           {liveUrl && (
             <a
               href={liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-cream/70 hover:text-[#2DB7FF] transition-colors duration-300"
+               // Use theme link colors, electric blue on hover
+              className="flex items-center gap-1.5 text-secondary-text hover:text-electric-blue transition-colors duration-200"
             >
-              <ExternalLink size={18} />
-              <span>Live Demo</span>
+              <ExternalLink size={16} /> {/* Smaller icon */}
+              <span>Demo</span>
             </a>
           )}
           {githubUrl && (
@@ -102,32 +118,19 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               href={githubUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-cream/70 hover:text-[#2DB7FF] transition-colors duration-300"
+               // Use theme link colors, electric blue on hover
+              className="flex items-center gap-1.5 text-secondary-text hover:text-electric-blue transition-colors duration-200"
             >
-              <Github size={18} />
-              <span>View Code</span>
+              <Github size={16} /> {/* Smaller icon */}
+              <span>Code</span>
             </a>
           )}
-          {codePreview && (
-            <button
-              className="flex items-center gap-2 text-cream/70 hover:text-[#2DB7FF] transition-colors duration-300"
-              onClick={() => {/* Toggle code preview */}}
-            >
-              <Code size={18} />
-              <span>Preview Code</span>
-            </button>
-          )}
+          {/* Keep code preview button if used */}
+          {/* {codePreview && ( ... )} */}
         </div>
       </div>
 
-      {/* Hover Effects */}
-      <motion.div
-        className="absolute inset-0 opacity-0 bg-gradient-to-t from-[#0F0F14] to-transparent pointer-events-none"
-        animate={{
-          opacity: isHovered ? 0.5 : 0
-        }}
-        transition={{ duration: 0.3 }}
-      />
+      {/* Removed extra motion.div for hover effects */}
     </motion.div>
   );
 };

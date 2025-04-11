@@ -1,12 +1,43 @@
-# React + Vite
+# Portfolio Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
 
-Currently, two official plugins are available:
+This is my personal portfolio website, built with React, Vite, and Tailwind CSS. It showcases my projects, skills, and experience as a developer. The backend is powered by Node.js and Express, providing a simple API for potential data management.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Key Features
 
-## Expanding the ESLint configuration
+*   **Modern Frontend:** Built with React and Vite for a fast and responsive user experience.
+*   **Styling:** Utilizes Tailwind CSS for flexible and maintainable styling.
+*   **Animations:** Includes smooth animations powered by Framer Motion to enhance the visual appeal.
+*   **Backend API:** Simple Node.js/Express API for potential future features (e.g., contact form submissions, project data management).
+*   **Responsive Design:** Adapts seamlessly to different screen sizes, ensuring a consistent experience across devices.
+*   **UI Components:** Uses Radix UI primitives for accessible and customizable UI components.
+*   **Theming:** Supports light and dark themes.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Technologies Used
+
+**Frontend:**
+*   React
+*   Vite
+*   Tailwind CSS
+*   TypeScript
+*   Radix UI
+*   Framer Motion
+
+**Backend:**
+*   Node.js
+*   Express
+*   TypeScript
+
+## Setup and Running
+
+**Prerequisites:**
+*   Node.js (>= 18.0.0)
+*   npm or yarn
+
+**Installation:**
+
+1.  **Clone the repository:**
+    
+
+

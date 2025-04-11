@@ -1,17 +1,17 @@
 import React, { ReactNode } from 'react';
-import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom";
+import { Routes, Route, useLocation, BrowserRouter } from "react-router-dom"; // BrowserRouter might not be needed here if already in main.tsx
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "./components/ui/toaster";
 import { motion, AnimatePresence } from 'framer-motion';
-import { ThemeProvider } from './contexts/ThemeContext';
+// Removed: import { ThemeProvider } from './contexts/ThemeContext';
 import { pageTransitionVariants } from './lib/animations';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer.tsx';
 import ScrollToTop from './components/ScrollToTop';
 import NotFound from './pages/not-found';
 
-// Lazy load components with .tsx extension
+// Lazy load components
 const Hero = React.lazy(() => import('./components/Hero.tsx'));
 const AboutSection = React.lazy(() => import('./components/AboutSection.tsx'));
 const ProjectGrid = React.lazy(() => import('./components/ProjectGrid'));
@@ -32,54 +32,53 @@ const PageWrapper: React.FC<PageWrapperProps> = ({ children }) => (
   </motion.div>
 );
 
-// Sample project data
+// Sample project data (Consider moving this to a separate file or fetching)
 const projects = [
   {
     id: "1",
     title: "Portfolio Website",
     description: "A modern portfolio website built with React and Tailwind CSS, featuring dark mode and smooth animations.",
-    image: "/images/portfolio.png",
+    image: "/images/portfolio.png", // Ensure this path is correct
     technologies: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
-    liveUrl: "https://example.com",
-    githubUrl: "https://github.com/example/portfolio"
+    liveUrl: "#", // Replace with actual live URL
+    githubUrl: "#" // Replace with actual GitHub URL
   },
   // ... other projects
 ];
 
 function AppContent() {
   const location = useLocation();
-  
-  // Add mouse movement tracking
-  React.useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth) * 100;
-      const y = (e.clientY / window.innerHeight) * 100;
-      document.documentElement.style.setProperty('--mouse-x', `${x}%`);
-      document.documentElement.style.setProperty('--mouse-y', `${y}%`);
-    };
 
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
+  // Remove mouse movement tracking if grid-glow effect is removed or handled differently
+  // React.useEffect(() => {
+  //   const handleMouseMove = (e: MouseEvent) => {
+  //     const x = (e.clientX / window.innerWidth) * 100;
+  //     const y = (e.clientY / window.innerHeight) * 100;
+  //     document.documentElement.style.setProperty('--mouse-x', `${x}%`);
+  //     document.documentElement.style.setProperty('--mouse-y', `${y}%`);
+  //   };
+  //   window.addEventListener('mousemove', handleMouseMove);
+  //   return () => window.removeEventListener('mousemove', handleMouseMove);
+  // }, []);
 
+  // Apply the noisy background class to the main div
   return (
-    <div className="flex flex-col min-h-screen bg-[#0a0a0f] text-cream overflow-hidden">
-      {/* Background effects */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#0F0F14_1px,transparent_1px),linear-gradient(to_bottom,#0F0F14_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
-      </div>
-      <div className="grid-background" />
-      <div className="grid-glow" />
+    // Added bg-noisy class
+    <div className="flex flex-col min-h-screen bg-noisy text-light-text overflow-x-hidden relative">
+      {/* Remove grid background/glow if not desired or implement differently */}
+      {/* <div className="grid-background" /> */}
+      {/* <div className="grid-glow" /> */}
 
       <Navbar />
-      <main className="pt-20 overflow-hidden flex-grow">
+      {/* Add class for the gradient background */}
+      <main className="pt-20 flex-grow isolate bg-dark-to-cream-gradient">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route
               path="/"
               element={
                 <PageWrapper>
-                  <React.Suspense fallback={<div className="h-80 bg-gray-800 flex items-center justify-center">Loading...</div>}>
+                  <React.Suspense fallback={<div className="h-screen flex items-center justify-center">Loading Home...</div>}>
                     <Hero />
                   </React.Suspense>
                 </PageWrapper>
@@ -89,7 +88,7 @@ function AppContent() {
               path="/about"
               element={
                 <PageWrapper>
-                  <React.Suspense fallback={<div className="container mx-auto px-4 py-12 text-center">Loading...</div>}>
+                  <React.Suspense fallback={<div className="container mx-auto px-4 py-12 text-center">Loading About...</div>}>
                     <AboutSection />
                   </React.Suspense>
                 </PageWrapper>
@@ -99,7 +98,7 @@ function AppContent() {
               path="/projects"
               element={
                 <PageWrapper>
-                  <React.Suspense fallback={<div className="text-center">Loading...</div>}>
+                  <React.Suspense fallback={<div className="container mx-auto px-4 py-12 text-center">Loading Projects...</div>}>
                     <ProjectGrid projects={projects} />
                   </React.Suspense>
                 </PageWrapper>
@@ -109,7 +108,7 @@ function AppContent() {
               path="/contact"
               element={
                 <PageWrapper>
-                  <React.Suspense fallback={<div className="container mx-auto px-4 py-12 text-center">Loading...</div>}>
+                  <React.Suspense fallback={<div className="container mx-auto px-4 py-12 text-center">Loading Contact...</div>}>
                     <ContactSection />
                   </React.Suspense>
                 </PageWrapper>
@@ -119,6 +118,7 @@ function AppContent() {
           </Routes>
         </AnimatePresence>
       </main>
+      {/* Footer might need adjustments for the cream background transition */}
       <Footer />
     </div>
   );
@@ -126,15 +126,13 @@ function AppContent() {
 
 const App = () => {
   return (
-    <ThemeProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <AppContent />
-          <ScrollToTop />
-          <Toaster />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </ThemeProvider>
+    // Removed ThemeProvider wrapper
+    <QueryClientProvider client={queryClient}>
+        <AppContent />
+        <ScrollToTop />
+        <Toaster />
+    </QueryClientProvider>
+    // Removed ThemeProvider wrapper
   );
 };
 

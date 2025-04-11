@@ -1,13 +1,16 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import ProjectCard from './ProjectCard';
+import ProjectCard from './ProjectCard'; // Assuming ProjectCard handles its own animation
+import { itemFadeInUp } from '../lib/animations'; // Or define variants locally
 
-interface Project {
+// --- Component Code ---
+
+interface Project { // Ensure this interface matches actual project data structure
   id: string;
   title: string;
   description: string;
   image: string;
-  codePreview?: string;
+  // codePreview?: string; // Keep if used
   technologies: string[];
   liveUrl?: string;
   githubUrl?: string;
@@ -17,43 +20,57 @@ interface ProjectGridProps {
   projects: Project[];
 }
 
+// Animation variant for the section title
+const titleFadeInUp = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
+
 const ProjectGrid: React.FC<ProjectGridProps> = ({ projects }) => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2
-      }
-    }
-  };
+  // Removed containerVariants as each card will animate independently
 
   return (
-    <section className="py-20 px-4 relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[#2DB7FF] opacity-[0.07] blur-[150px] rounded-full" />
-        <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-[#8A2BE2] opacity-[0.07] blur-[150px] rounded-full" />
+    <section id="projects" className="relative py-24 px-4 overflow-hidden min-h-screen"> {/* Added ID and min-height */}
+      {/* Background Effects - Keep or adjust */}
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-electric-blue opacity-[0.05] blur-[150px] rounded-full" />
+        <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-purple-600 opacity-[0.05] blur-[150px] rounded-full" />
       </div>
 
       <div className="container mx-auto relative z-10">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
+         {/* Section Title */}
+         <motion.div
+           className="text-center mb-16"
+           initial="hidden"
+           whileInView="visible"
+           viewport={{ once: true, amount: 0.5 }}
+           variants={titleFadeInUp} // Use a simple fade-in for the title
+         >
+           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+             Projects
+           </h2>
+           <p className="text-secondary-text text-lg max-w-2xl mx-auto">
+             A selection of my work showcasing different technologies and solutions.
+           </p>
+         </motion.div>
+
+        {/* Grid container - No complex variants needed now */}
+        <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
         >
           {projects.map((project) => (
+            // ProjectCard will handle its own whileInView animation
             <ProjectCard
               key={project.id}
               {...project}
             />
           ))}
-        </motion.div>
+        </div>
       </div>
 
-      {/* Grid overlay effect */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0F0F14_1px,transparent_1px),linear-gradient(to_bottom,#0F0F14_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+      {/* Removed grid overlay effect if not desired, or keep */}
+      {/* <div className="absolute inset-0 bg-[...] pointer-events-none" /> */}
     </section>
   );
 };
