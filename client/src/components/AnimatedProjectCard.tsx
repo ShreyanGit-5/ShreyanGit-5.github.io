@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import Modal from 'react-modal';
+import { fadeInVariants, scaleVariants } from '../lib/animations';
 
 // Set Modal app element for accessibility
 if (typeof window !== 'undefined') {
@@ -64,14 +65,9 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
   return (
     <motion.div
       className={`bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg flex flex-col ${className}`}
-      whileHover={{ 
-        scale: 1.02,
-        boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
-        transition: { duration: 0.3, ease: "easeOut" }
-      }}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
+      variants={fadeInVariants}
+      initial="hidden"
+      animate="visible"
       {...props}
     >
       {/* Project Image with Hover Icons */}
@@ -115,11 +111,9 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
                 rel="noopener noreferrer"
                 aria-label="View source code"
                 className="project-icon icon-link w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 shadow-lg"
-                whileHover={{ 
-                  scale: 1.1,
-                  boxShadow: "0 0 8px rgba(138, 43, 226, 0.6), 0 0 12px rgba(0, 123, 255, 0.5)"
-                }}
-                whileTap={{ scale: 0.95 }}
+                variants={scaleVariants}
+                whileHover="hover"
+                whileTap="tap"
               >
                 <div className="flex items-center justify-center w-full h-full">
                   <FaGithub className="text-white text-xl" />
@@ -134,11 +128,9 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
                 rel="noopener noreferrer"
                 aria-label="View live demo"
                 className="project-icon icon-link w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center transition-all duration-300 shadow-lg"
-                whileHover={{ 
-                  scale: 1.1,
-                  boxShadow: "0 0 8px rgba(138, 43, 226, 0.6), 0 0 12px rgba(0, 123, 255, 0.5)"
-                }}
-                whileTap={{ scale: 0.95 }}
+                variants={scaleVariants}
+                whileHover="hover"
+                whileTap="tap"
               >
                 <div className="flex items-center justify-center w-full h-full">
                   <FaExternalLinkAlt className="text-white text-xl" />
@@ -176,8 +168,9 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
           <motion.button
             onClick={openModal}
             className="text-xs sm:text-sm px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-md transition-colors font-medium shadow-sm"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
+            variants={scaleVariants}
+            whileHover="hover"
+            whileTap="tap"
           >
             Read More
           </motion.button>
@@ -196,15 +189,18 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
           {/* Header with Close Button */}
           <div className="flex justify-between items-start mb-6">
             <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100">{project.title}</h2>
-            <button
+            <motion.button
               onClick={closeModal}
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 p-1 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               aria-label="Close modal"
+              variants={scaleVariants}
+              whileHover="hover"
+              whileTap="tap"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
-            </button>
+            </motion.button>
           </div>
           
           {/* Project image in modal */}
@@ -309,4 +305,4 @@ const AnimatedProjectCard: React.FC<AnimatedProjectCardProps> = ({ project, clas
   );
 };
 
-export default AnimatedProjectCard; 
+export default AnimatedProjectCard;

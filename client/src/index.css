@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -185,19 +185,20 @@
   ::-webkit-scrollbar {
     @apply w-2;
   }
-  
+
   ::-webkit-scrollbar-track {
-    @apply bg-gray-100 dark:bg-gray-800;
+    @apply bg-cream-5;
   }
-  
+
   ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+    @apply bg-cream-10 rounded-full hover:bg-cream-20 transition-colors duration-300;
   }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-gray-400 dark:bg-gray-500;
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-[#2DB7FF]/30 text-cream;
   }
-  
+
   :root {
     /* Base colors */
     --color-primary-50: 240 247 255;
@@ -263,6 +264,73 @@
     /* Custom cursor interactions */
     --mouse-x: 50%;
     --mouse-y: 50%;
+
+    /* Emerald glow colors */
+    --emerald-light: 16, 185, 129;   /* emerald-500 */
+    --emerald: 5, 150, 105;          /* emerald-600 */
+    --emerald-dark: 4, 120, 87;      /* emerald-700 */
+
+    /* Core colors */
+    --color-dark: 10 10 15;
+    --color-electric-blue: 45 183 255;
+    --color-cream: 248 247 245;
+    --color-purple-accent: 138 43 226;
+    --color-emerald-accent: 16 185 129;
+    
+    /* Theme colors */
+    --background: var(--color-dark);
+    --foreground: var(--color-cream);
+    --primary: var(--color-electric-blue);
+    --accent-1: var(--color-purple-accent);
+    --accent-2: var(--color-emerald-accent);
+
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 5.9% 10%;
+    --radius: 0.5rem;
+
+    /* Root element theme transition */
+    &, & * {
+      @apply theme-transition;
+    }
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
   }
 
   /* Remove underlines from all links by default */
@@ -321,6 +389,71 @@
     --accent-light: 165, 180, 252;   /* Indigo-300 */
     --accent: 129, 140, 248;         /* Indigo-400 */
     --accent-dark: 99, 102, 241;     /* Indigo-500 */
+  }
+
+  body {
+    @apply bg-[#0a0a0f] text-[#F8F7F5] antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  .glass-effect {
+    @apply backdrop-blur-md bg-black/40 border border-white/10;
+  }
+
+  .electric-glow {
+    text-shadow: 0 0 10px rgba(45, 183, 255, 0.5),
+                 0 0 20px rgba(45, 183, 255, 0.3);
+  }
+
+  .nav-container {
+    @apply fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl mx-auto rounded-2xl glass-effect z-50;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    @apply w-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-cream-5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-cream-10 rounded-full hover:bg-cream-20 transition-colors duration-300;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-[#2DB7FF]/30 text-cream;
+  }
+
+  /* Grid background with glow */
+  .grid-background {
+    @apply fixed inset-0 pointer-events-none;
+    background-image: 
+      linear-gradient(to right, rgb(45 183 255 / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(45 183 255 / 0.05) 1px, transparent 1px);
+    background-size: 4rem 4rem;
+    mask-image: radial-gradient(
+      ellipse 80% 50% at 50% 50%,
+      rgba(0, 0, 0, 1) 70%,
+      transparent 100%
+    );
+  }
+
+  .grid-glow {
+    @apply fixed inset-0 pointer-events-none;
+    background: radial-gradient(
+      circle at var(--mouse-x) var(--mouse-y),
+      rgb(45 183 255 / 0.15) 0%,
+      transparent 50%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  body:hover .grid-glow {
+    opacity: 1;
   }
 }
 
@@ -454,25 +587,131 @@
     color: #e0e0e0;
   }
 
-  /* Enhanced navigation styles */
+  /* Enhanced navigation styles with subtle glow */
   .active-nav-link {
     @apply relative;
-    text-shadow: 0 0 10px var(--accent-light);
+    /* Reduced glow intensity */
+    text-shadow: 
+      0 0 10px rgba(16, 185, 129, 0.2),
+      0 0 20px rgba(52, 211, 153, 0.1);
   }
 
-  .active-nav-link::after {
+  /* Light mode specific styles */
+  @media (prefers-color-scheme: light) {
+    .active-nav-link {
+      /* Slightly increased contrast for light mode */
+      text-shadow: 
+        0 0 8px rgba(16, 185, 129, 0.25),
+        0 0 16px rgba(16, 185, 129, 0.15);
+    }
+  }
+
+  /* Dark mode specific styles */
+  .dark .active-nav-link {
+    /* Enhanced glow for dark mode but still subtle */
+    text-shadow: 
+      0 0 12px rgba(52, 211, 153, 0.3),
+      0 0 24px rgba(16, 185, 129, 0.2);
+  }
+
+  /* Glow container animations */
+  .active-nav-link::before {
     content: '';
-    @apply absolute left-1/2 -translate-x-1/2 bottom-2 w-1 h-1 rounded-full bg-accent;
-    box-shadow: 0 0 8px var(--accent);
+    @apply absolute inset-0 -z-10 rounded-xl opacity-0;
+    background: radial-gradient(
+      circle at center,
+      rgba(16, 185, 129, 0.08) 0%,
+      rgba(16, 185, 129, 0.05) 35%,
+      transparent 70%
+    );
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  /* WCAG contrast helpers */
+  .active-nav-link {
+    @apply font-medium;
+    @apply outline-none ring-0 focus-visible:ring-2 ring-emerald-500/20;
   }
 
   /* Center align nav items */
   nav .nav-items {
-    @apply flex items-center justify-center h-full space-x-8;
+    @apply flex items-center justify-center h-full;
+    & > * {
+      @apply flex items-center h-full;
+    }
   }
 
-  nav .nav-link {
-    @apply flex items-center justify-center relative px-6 py-3;
+  /* Header and Footer Styles */
+  .site-header {
+    @apply fixed top-0 left-0 right-0 z-50 h-[100px] isolate;
+    background: linear-gradient(160deg, 
+      rgba(75, 0, 130, 0.95), /* Deep Purple */
+      rgba(30, 58, 138, 0.95), /* Deep Blue */
+      rgba(245, 245, 245, 0.95) /* Creamy Off-White */
+    );
+    backdrop-filter: blur(8px);
+  }
+
+  .dark .site-header {
+    background: linear-gradient(160deg, 
+      rgba(75, 0, 130, 0.95),
+      rgba(30, 58, 138, 0.95),
+      rgba(26, 26, 26, 0.95)
+    );
+  }
+
+  .site-footer {
+    @apply relative min-h-[80px] isolate;
+    background: linear-gradient(-20deg, 
+      rgba(75, 0, 130, 0.95),
+      rgba(30, 58, 138, 0.95),
+      rgba(245, 245, 245, 0.95)
+    );
+  }
+
+  .dark .site-footer {
+    background: linear-gradient(-20deg, 
+      rgba(75, 0, 130, 0.95),
+      rgba(30, 58, 138, 0.95),
+      rgba(26, 26, 26, 0.95)
+    );
+  }
+
+  /* Enhanced text shadows for better readability */
+  .header-text, .footer-text {
+    text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Active navigation highlight with emerald glow */
+  .active-nav-link {
+    @apply relative text-emerald-500;
+    text-shadow: 
+      0 0 10px rgba(16, 185, 129, 0.2),
+      0 0 20px rgba(52, 211, 153, 0.1);
+  }
+
+  /* Hover effect for nav links */
+  .nav-link:hover {
+    @apply text-emerald-400 transition-all duration-300;
+    text-shadow: 0 0 15px rgba(16, 185, 129, 0.25);
+  }
+
+  /* Glow container for active nav items */
+  .active-nav-link::before {
+    content: '';
+    @apply absolute inset-0 -z-10 rounded-xl opacity-0;
+    background: radial-gradient(
+      circle at center,
+      rgba(16, 185, 129, 0.12) 0%,
+      rgba(16, 185, 129, 0.08) 35%,
+      transparent 70%
+    );
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 0.8; }
   }
 }
 
@@ -539,5 +778,74 @@
   
   .text-shadow-none {
     text-shadow: none;
+  }
+
+  .glass-effect {
+    @apply bg-black/10 backdrop-blur-lg border border-white/10 relative overflow-hidden;
+    &::before {
+      content: '';
+      @apply absolute inset-0 opacity-30;
+      background: linear-gradient(
+        to right bottom,
+        transparent,
+        rgba(45, 183, 255, 0.05),
+        rgba(138, 43, 226, 0.05),
+        transparent
+      );
+      animation: gradientMove 8s linear infinite;
+    }
+  }
+
+  @keyframes gradientMove {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  .nav-blur-transition {
+    transition: backdrop-filter 0.3s ease-in-out,
+                background-color 0.3s ease-in-out,
+                border-color 0.3s ease-in-out;
+  }
+
+  .nav-link {
+    @apply relative;
+  }
+
+  .nav-link::before {
+    content: '';
+    @apply absolute inset-0 rounded-md -z-10 opacity-0 transition-opacity duration-300;
+    background: linear-gradient(
+      to right,
+      rgba(45, 183, 255, 0.1),
+      rgba(138, 43, 226, 0.1)
+    );
+  }
+
+  .nav-link:hover::before,
+  .nav-link.active-nav-link::before {
+    @apply opacity-100;
+  }
+
+  .nav-link::after {
+    content: '';
+    @apply absolute left-0 right-0 bottom-0 h-0.5 bg-[#2DB7FF] scale-x-0 transition-transform duration-300 ease-out origin-center;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active-nav-link::after {
+    @apply scale-x-100;
+  }
+
+  .electric-glow {
+    text-shadow: 0 0 10px rgba(45, 183, 255, 0.5),
+                 0 0 20px rgba(138, 43, 226, 0.3);
+  }
+
+  .theme-transition {
+    @apply transition-[background-color,border-color,color,fill,stroke] duration-300;
   }
 }

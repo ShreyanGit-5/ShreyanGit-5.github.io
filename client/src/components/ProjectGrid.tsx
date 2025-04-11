@@ -1,117 +1,61 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import AnimatedProjectCard from './AnimatedProjectCard';
+import ProjectCard from './ProjectCard';
 
 interface Project {
-  id: number;
+  id: string;
   title: string;
   description: string;
-  tags: string[];
   image: string;
-  liveLink: string;
-  repoLink: string;
-  challenges: string;
-  solutions: string;
+  codePreview?: string;
+  technologies: string[];
+  liveUrl?: string;
+  githubUrl?: string;
 }
 
-// Enhanced project data with additional details for the modal
-const projects: Project[] = [
-  {
-    id: 1,
-    title: 'E-commerce Platform',
-    description: 'A full-featured e-commerce platform with product catalog, shopping cart, user authentication, and payment processing. Built with React, Node.js, and MongoDB.',
-    tags: ['React', 'Node.js', 'MongoDB', 'Express'],
-    image: 'https://images.unsplash.com/photo-1523474253046-8cd2748b5fd2',
-    liveLink: 'https://example.com/ecommerce',
-    repoLink: 'https://github.com/example/ecommerce',
-    challenges: 'Implementing a secure and scalable shopping cart system was challenging. Handling product variants, inventory management, and ensuring a smooth checkout process required careful planning and execution.',
-    solutions: 'We used Redux for state management, implemented JWT authentication, and designed a MongoDB schema that efficiently handled product variants and inventory tracking. The payment process was secured with Stripe integration.'
-  },
-  {
-    id: 2,
-    title: 'Personal Finance Dashboard',
-    description: 'Interactive dashboard for tracking personal finances, with expense categorization, budget planning, and visual reports. Uses React, D3.js, and Firebase.',
-    tags: ['React', 'D3.js', 'Firebase', 'Tailwind CSS'],
-    image: 'https://images.unsplash.com/photo-1579621970795-87facc2f976d',
-    liveLink: 'https://example.com/finance',
-    repoLink: 'https://github.com/example/finance',
-    challenges: 'Creating intuitive visualizations for complex financial data and ensuring real-time updates while maintaining performance across devices presented significant challenges.',
-    solutions: 'Leveraged D3.js for custom visualizations optimized for different screen sizes. Implemented Firebase real-time database with careful query structuring to minimize data transfer while keeping the UI responsive.'
-  },
-  {
-    id: 3,
-    title: 'Task Management App',
-    description: 'Collaborative task management application with real-time updates, task assignments, and progress tracking. Built with Next.js, TypeScript, and Supabase.',
-    tags: ['Next.js', 'TypeScript', 'Supabase', 'TailwindCSS'],
-    image: 'https://images.unsplash.com/photo-1611224885990-ab7d7b4bf01e',
-    liveLink: 'https://example.com/tasks',
-    repoLink: 'https://github.com/example/tasks',
-    challenges: 'Building a real-time collaboration system that maintained data consistency across multiple users while ensuring a responsive user interface was particularly difficult.',
-    solutions: 'Implemented Supabase real-time subscriptions with optimistic UI updates. Used TypeScript to enforce type safety and prevent bugs. Next.js server-side rendering improved initial load performance while maintaining real-time capabilities.'
-  },
-  {
-    id: 4,
-    title: 'Weather Forecast App',
-    description: 'A sleek weather application that provides accurate forecasts, radar maps, and personalized alerts. Integrates with weather APIs and geolocation services.',
-    tags: ['React', 'API Integration', 'Geolocation', 'PWA'],
-    image: 'https://images.unsplash.com/photo-1592210454359-9043f067919b',
-    liveLink: 'https://example.com/weather',
-    repoLink: 'https://github.com/example/weather',
-    challenges: 'Handling unreliable API responses, implementing accurate geolocation, and creating a smooth user experience with potentially slow network conditions were major challenges.',
-    solutions: 'Implemented service workers for offline capabilities, used IndexedDB for caching weather data, and created fallback UI states for all API interactions. Added progressive enhancement to ensure core functionality worked even without JavaScript.'
-  },
-  {
-    id: 5,
-    title: 'Social Media Dashboard',
-    description: 'Unified dashboard for managing multiple social media accounts, with scheduling, analytics, and content planning features. Built with Vue.js and GraphQL.',
-    tags: ['Vue.js', 'GraphQL', 'Analytics', 'OAuth'],
-    image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f',
-    liveLink: 'https://example.com/social',
-    repoLink: 'https://github.com/example/social',
-    challenges: 'Integrating with multiple social media APIs, each with different authentication methods and rate limits, while providing a unified interface was extremely complex.',
-    solutions: 'Designed a GraphQL API that normalized data from various social platforms. Implemented a token refresh system for OAuth and a queuing system for API requests to prevent rate limit issues. Used Vue.js composition API for shared functionality across components.'
-  },
-  {
-    id: 6,
-    title: 'Recipe Sharing Platform',
-    description: 'Community-driven recipe sharing platform with user ratings, comments, and customization options. Features a responsive design and offline capabilities.',
-    tags: ['React', 'Firebase', 'PWA', 'Responsive Design'],
-    image: 'https://images.unsplash.com/photo-1495521821757-a1efb6729352',
-    liveLink: 'https://example.com/recipes',
-    repoLink: 'https://github.com/example/recipes',
-    challenges: 'Creating a highly interactive recipe editor that supported complex formatting, ingredient scaling, and unit conversion while maintaining accessibility was challenging.',
-    solutions: 'Built a custom React-based editor with semantic HTML structure. Implemented a robust conversion system for recipe measurements and created a responsive design system that adapted to different devices and screen orientations.'
-  }
-];
+interface ProjectGridProps {
+  projects: Project[];
+}
 
-const ProjectGrid: React.FC = () => {
-  // Container variants
+const ProjectGrid: React.FC<ProjectGridProps> = ({ projects }) => {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.2
       }
     }
   };
 
   return (
-    <motion.div
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-      className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 lg:gap-12 p-4 sm:p-6 w-full max-w-7xl mx-auto"
-    >
-      {projects.map((project) => (
-        <AnimatedProjectCard
-          key={project.id}
-          project={project}
-          className="w-full"
-        />
-      ))}
-    </motion.div>
+    <section className="py-20 px-4 relative overflow-hidden">
+      {/* Background Effects */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[#2DB7FF] opacity-[0.07] blur-[150px] rounded-full" />
+        <div className="absolute bottom-1/3 left-1/4 w-[500px] h-[500px] bg-[#8A2BE2] opacity-[0.07] blur-[150px] rounded-full" />
+      </div>
+
+      <div className="container mx-auto relative z-10">
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+        >
+          {projects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              {...project}
+            />
+          ))}
+        </motion.div>
+      </div>
+
+      {/* Grid overlay effect */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#0F0F14_1px,transparent_1px),linear-gradient(to_bottom,#0F0F14_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] pointer-events-none" />
+    </section>
   );
 };
 
-export default ProjectGrid; 
+export default ProjectGrid;

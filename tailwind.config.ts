@@ -2,7 +2,10 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
+  content: [
+    "./client/index.html", 
+    "./client/src/**/*.{js,jsx,ts,tsx}"
+  ],
   theme: {
     // Define font family
     fontFamily: {
@@ -222,6 +225,20 @@ export default {
         darkBackground: '#121212',
         darkText: '#e0e0e0',
         darkAccent: '#1a73e8',
+        cream: {
+          DEFAULT: "#F8F7F5",
+          5: "rgb(248 247 245 / 0.05)",
+          10: "rgb(248 247 245 / 0.1)",
+          20: "rgb(248 247 245 / 0.2)",
+          30: "rgb(248 247 245 / 0.3)",
+          40: "rgb(248 247 245 / 0.4)",
+          50: "rgb(248 247 245 / 0.5)",
+          60: "rgb(248 247 245 / 0.6)",
+          70: "rgb(248 247 245 / 0.7)",
+          80: "rgb(248 247 245 / 0.8)",
+          90: "rgb(248 247 245 / 0.9)",
+          100: "#F8F7F5"
+        },
       },
       // Animation keyframes
       keyframes: {
